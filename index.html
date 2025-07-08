@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tackling Dimensional Collapse toward Comprehensive Universal Domain Adaptation</title>
+    <title>Soft Separation and Distillation: Toward Global Uniformity in Federated Unsupervised Learning</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
@@ -25,13 +25,17 @@
         <div class="container">
             <div class="row">
                 <div class="mx-auto text-center">
-                    <h1 class="paper-title">Tackling Dimensional Collapse toward Comprehensive Universal Domain Adaptation</h1>
+                    <h1 class="paper-title">Soft Separation and Distillation: Toward Global Uniformity in Federated Unsupervised Learning</h1>
                     <div class="author-line text-center mb-2">
-                        <span><a href="https://hc-fang.github.io/" class="text-light author-link">Hung-Chieh&nbsp;Fang</a></span>
+                        <span><a href="https://hc-fang.github.io/" class="text-light author-link">Hung-Chieh&nbsp;Fang<sup>1</sup></a></span>
                         <span class="mx-2 text-light">•</span>
-                        <span><a href="https://ariapoy.github.io/" class="text-light author-link">Po-Yi&nbsp;Lu</a></span>
+                        <span><a href="https://www.csie.ntu.edu.tw/~htlin/" class="text-light author-link">Hsuan-Tien&nbsp;Lin<sup>1</sup></a></span>
                         <span class="mx-2 text-light">•</span>
-                        <span><a href="https://www.csie.ntu.edu.tw/~htlin/" class="text-light author-link">Hsuan-Tien&nbsp;Lin</a></span>
+                        <span><a href="https://www.cse.cuhk.edu.hk/irwin.king/" class="text-light author-link">Irwin&nbsp;King<sup>2</sup></a></span>
+                        <span class="mx-2 text-light">•</span>
+                        <span><a href="https://yifeiacc.github.io/" class="text-light author-link">Yifei&nbsp;Zhang<sup>2</sup></a></span>
+
+                        
                     </div>
                     <!-- <div class="project-lead-line mt-2 mb-3 text-center">
                         <span class="text-light"><sup>†</sup> Project Lead</span>
@@ -42,12 +46,13 @@
     <!-- <span class="institution-logo-wrapper"> -->
         <!-- <img src="webpage_assets/logos/meta.png" alt="FAIR, Meta" class="institution-logo" title="FAIR, Meta"> -->
         <!-- <sup>1</sup> -->
-        <span class="institution-line">National Taiwan University</span>
+        <span class="institution-line" style="margin-right: 1em;"><sup>1</sup>National Taiwan University</span>
+        <span class="institution-line"><sup>2</sup>The Chinese University of Hong Kong</span>
     <!-- </span> -->
 </div>
 
                 <div class="mt-2 mb-3 text-center">
-                    <span class="text-light">ICML 2025</span>
+                    <span class="text-light">ICCV 2025</span>
                 </div>
 
                     <div class="mt-4">
@@ -62,16 +67,23 @@
     <!-- Main Content -->
     <main class="container">
 
-        <!-- Abstract Section -->
         <section id="abstract">
-            <h2 class="section-title">Abstract</h2>
-                <p>
-                    Universal Domain Adaptation (UniDA) addresses unsupervised domain adaptation where target classes may differ arbitrarily from source ones, except for a shared subset. A widely used approach, partial domain matching (PDM), aligns only shared classes but struggles in extreme cases where many source classes are absent in the target domain, underperforming the most naive baseline that trains on only source data. In this work, we identify that the failure of PDM for extreme UniDA stems from dimensional collapse (DC) in target representations. To address target DC, we propose to jointly leverage the alignment and uniformity techniques in self-supervised learning on the unlabeled target data to preserve the intrinsic structure of the learned representations. Our experimental results confirm that SSL consistently advances PDM and delivers new state-of-the-art results across a broader benchmark of UniDA scenarios with different portions of shared classes, representing a crucial step toward truly comprehensive UniDA.
-                </p>
+            <h2 class="section-title">WIP</h2>
+                <!-- <p>
+                    Federated Unsupervised Learning (FUL) aims to learn expressive representations in federated and self-supervised settings. The quality of representations learned in FUL is usually determined by uniformity, a measure of how uniformly representations are distributed in the embedding space. However, existing solutions perform well in achieving intra-client (local) uniformity for local models while failing to achieve inter-client (global) uniformity after aggregation due to non-IID data distributions and the decentralized nature of FUL. To address this issue, we propose Soft Separation and Distillation (SSD), a novel approach that preserves inter-client uniformity by encouraging client representations to spread toward different directions. This design reduces interference during client model aggregation, thereby improving global uniformity while preserving local representation expressiveness. We further enhance this effect by introducing a projector distillation module to address the discrepancy between loss optimization and representation quality. We evaluate SSD in both cross-silo and cross-device federated settings, demonstrating consistent improvements in representation quality and task performance across various training scenarios. Our results highlight the importance of inter-client uniformity in FUL and establish SSD as an effective solution to this challenge.
+                </p> -->
         </section>
 
-        <!-- Video Section -->
-        <section id="video">
+        <!-- Abstract Section -->
+        <!-- <section id="abstract">
+            <h2 class="section-title">Abstract</h2>
+                <p>
+                    Federated Unsupervised Learning (FUL) aims to learn expressive representations in federated and self-supervised settings. The quality of representations learned in FUL is usually determined by uniformity, a measure of how uniformly representations are distributed in the embedding space. However, existing solutions perform well in achieving intra-client (local) uniformity for local models while failing to achieve inter-client (global) uniformity after aggregation due to non-IID data distributions and the decentralized nature of FUL. To address this issue, we propose Soft Separation and Distillation (SSD), a novel approach that preserves inter-client uniformity by encouraging client representations to spread toward different directions. This design reduces interference during client model aggregation, thereby improving global uniformity while preserving local representation expressiveness. We further enhance this effect by introducing a projector distillation module to address the discrepancy between loss optimization and representation quality. We evaluate SSD in both cross-silo and cross-device federated settings, demonstrating consistent improvements in representation quality and task performance across various training scenarios. Our results highlight the importance of inter-client uniformity in FUL and establish SSD as an effective solution to this challenge.
+                </p>
+        </section> -->
+
+        <!-- Video Section --> 
+        <!-- <section id="video">
             <h2 class="section-title">Video</h2>
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10">
@@ -86,12 +98,11 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         
         <!-- Motivation Section -->
-        <section id="motivation">
+        <!-- <section id="motivation">
             <h2 class="section-title">Motivation</h2>
-
             <div class="row figure-container my-4">
                 <div class="col-12 mb-3">
                     <img src="static/images/motivation.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid">
@@ -103,11 +114,11 @@
                     </em>
                 </div>
             </div>
-        </section>
+        </section> -->
          
 
         <!-- Key Findings Section -->
-        <section id="key-findings">
+        <!-- <section id="key-findings">
             <h2 class="section-title">Key Findings</h2>
             
             <div class="row mb-5">
@@ -153,11 +164,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
         <!-- Evaluation Section -->
-        <section id="evaluation">
+        <!-- <section id="evaluation">
             <h2 class="section-title">Address Dimensional Collapse without Labels</h2>
             <div class="col-lg-12">
                 <h4>De-collapse Techniques from Self-Supervised Learning</h4>
@@ -182,7 +193,7 @@
                     </div>
                 </div>
             </div>
-        </section>                    
+        </section>                     -->
                         
 
             
@@ -195,10 +206,10 @@
                 <button id="copy-citation-btn" class="btn btn-sm" onclick="copyCitation()" style="position: absolute; top: 10px; right: 10px; z-index: 10;">
                     <i class="fas fa-copy"></i> Copy
                 </button>
-                <pre id="code-block-citation" style="padding: 20px; padding-top: 50px; margin: 0; overflow-x: auto;"><code class="plaintext">@inproceedings{dcunida_fang2025,
-    title={Tackling Dimensional Collapse toward Comprehensive Universal Domain Adaptation},
-    author={Hung-Chieh Fang and Po-Yi Lu and Hsuan-Tien Lin},
-    booktitle={Proceedings of the International Conference on Machine Learning (ICML)},
+                <pre id="code-block-citation" style="padding: 20px; padding-top: 50px; margin: 0; overflow-x: auto;"><code class="plaintext">@inproceedings{ssd_fang2025,
+    title={Soft Separation and Distillation: Toward Global Uniformity in Federated Unsupervised Learning},
+    author={Hung-Chieh Fang and Hsuan-Tien Lin and Irwin King and Yifei Zhang},
+    booktitle={Proceedings of the International Conference on Computer Vision (ICCV)},
     year={2025},
 }</code></pre>
 
