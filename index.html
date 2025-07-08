@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tackling Dimensional Collapse toward Comprehensive Universal Domain Adaptation</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts - Nunito as Avenir Next alternative -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Add this for better Avenir Next support if you have the license -->
+    <link rel="stylesheet" href="https://use.typekit.net/your-project-id.css">
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+    <!-- VSCode Syntax Highlighting -->
+    <link href="vscode-light-style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header-section" id="overview">
+        <div class="container">
+            <div class="row">
+                <div class="mx-auto text-center">
+                    <h1 class="paper-title">Tackling Dimensional Collapse toward Comprehensive Universal Domain Adaptation</h1>
+                    <div class="author-line text-center mb-2">
+                        <span><a href="https://hc-fang.github.io/" class="text-light author-link">Hung-Chieh&nbsp;Fang</a></span>
+                        <span class="mx-2 text-light">•</span>
+                        <span><a href="https://ariapoy.github.io/" class="text-light author-link">Po-Yi&nbsp;Lu</a></span>
+                        <span class="mx-2 text-light">•</span>
+                        <span><a href="https://www.csie.ntu.edu.tw/~htlin/" class="text-light author-link">Hsuan-Tien&nbsp;Lin</a></span>
+                    </div>
+                    <!-- <div class="project-lead-line mt-2 mb-3 text-center">
+                        <span class="text-light"><sup>†</sup> Project Lead</span>
+                    </div> -->
+                    <!-- Institution Logos Section (Replace the text-based institution line) -->
+<!-- Institution Logos Section -->
+<div class="institution-logos text-center mb-3">
+    <!-- <span class="institution-logo-wrapper"> -->
+        <!-- <img src="webpage_assets/logos/meta.png" alt="FAIR, Meta" class="institution-logo" title="FAIR, Meta"> -->
+        <!-- <sup>1</sup> -->
+        <span class="institution-line">National Taiwan University</span>
+    <!-- </span> -->
+</div>
+
+                <div class="mt-2 mb-3 text-center">
+                    <span class="text-light">ICML 2025</span>
+                </div>
+
+                    <div class="mt-4">
+                        <a href="https://arxiv.org/abs/2410.11271" class="btn btn-light me-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);"><i class="fas fa-file-alt me-2" style="color: var(--primary-color);"></i>Paper</a>
+                        <a href="https://github.com/hc-fang/" class="btn btn-light me-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);"><i class="fab fa-github me-2" style="color: var(--primary-color);"></i>Code</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Abstract Section -->
+        <section id="abstract">
+            <h2 class="section-title">Abstract</h2>
+                <p>
+                    Universal Domain Adaptation (UniDA) addresses unsupervised domain adaptation where target classes may differ arbitrarily from source ones, except for a shared subset. A widely used approach, partial domain matching (PDM), aligns only shared classes but struggles in extreme cases where many source classes are absent in the target domain, underperforming the most naive baseline that trains on only source data. In this work, we identify that the failure of PDM for extreme UniDA stems from dimensional collapse (DC) in target representations. To address target DC, we propose to jointly leverage the alignment and uniformity techniques in self-supervised learning on the unlabeled target data to preserve the intrinsic structure of the learned representations. Our experimental results confirm that SSL consistently advances PDM and delivers new state-of-the-art results across a broader benchmark of UniDA scenarios with different portions of shared classes, representing a crucial step toward truly comprehensive UniDA.
+                </p>
+        </section>
+
+        <!-- Video Section -->
+        <section id="video">
+            <h2 class="section-title">Video</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/bR6_Cq5t7xw?si=gRL4UHImpl6FWQpa" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Motivation Section -->
+        <section id="motivation">
+            <h2 class="section-title">Motivation</h2>
+
+            <div class="row figure-container my-4">
+                <div class="col-12 mb-3">
+                    <img src="static/images/motivation.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid">
+                </div>
+                <div class="figure-caption">
+                    <em><b>Left</b>: Universal domain adaptation addresses both domain shift and category shift. 
+                        However, category shift scenarios with high source-private ratios remain under-explored.
+                        <b>Right</b>: In such extreme cases, existing partial domain matching (PDM) methods that align source and target data on shared classes fail to outperform the simplest source-only baseline. 
+                    </em>
+                </div>
+            </div>
+        </section>
+         
+
+        <!-- Key Findings Section -->
+        <section id="key-findings">
+            <h2 class="section-title">Key Findings</h2>
+            
+            <div class="row mb-5">
+                <div class="col-lg-12">
+                    <h4>Dimensional Collapse under Extreme UniDA</h4>
+                    <p>Our analysis reveals that dimensional collapse occurs when the source-private ratio is high. We demonstrate this phenomenon through both a toy example for intuitive visualization and rigorous analysis of singular value spectrum.</p>
+                    
+                    <div class="row figure-container my-4">
+                        <div class="col-12 mb-3">
+                            <img src="static/images/dc.png" alt="DC" class="img-fluid">
+                        </div>
+                        <div class="figure-caption">
+                            <em>
+                                <b>Left</b>: Toy example for visualization, where we sample different numbers of source-private data to study the effect under extreme UniDA. The target representations collapse to a single line under high source-private ratios.
+                                <b>Right</b>: Singular value spectrum of target representations under different source-private ratios. Several singular values drop to zero under high source-private ratios.
+                            </em>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <h4>Degraded Representation Quality Impairs PDM</h4>
+                    <p>Our analysis reveals that dimensional collapse occurs when the source-private ratio is high. We demonstrate this phenomenon through both a toy example for intuitive visualization and rigorous analysis of singular value spectrum.</p>
+                    
+                    <div class="row figure-container my-4">
+                        <div class="col-12 mb-3">
+                            <img src="static/images/pdm.png" alt="DC" class="img-fluid">
+                        </div>
+                        <div class="figure-caption">
+                            <em>
+                                Partial domain matching relies on accurate uncertainty estimation, which could be compromised by poor representation quality.
+                            </em>
+
+                        </div>
+                        <div class="col-12 mb-3">
+                            <img src="static/images/error_analysis.png" alt="DC" class="img-fluid">
+                        </div>
+                        <div class="figure-caption">
+                            <em>
+                                Under high source-private ratios, uncertainty estimation must be highly accurate to outperform the source-only baseline, yet the estimation error is substantial. Conversely, under low source-private ratios, moderate accuracy suffices and the estimation error is low.
+                            </em>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <!-- Evaluation Section -->
+        <section id="evaluation">
+            <h2 class="section-title">Address Dimensional Collapse without Labels</h2>
+            <div class="col-lg-12">
+                <h4>De-collapse Techniques from Self-Supervised Learning</h4>
+                <p>Dimensional collapse is a well-known issue in self-supervised learning, primarily caused by the contrastive alignment term (<a href="https://arxiv.org/abs/2110.09348" target="_blank">Li et al., 2020</a>). Various methods have been developed to address this problem, including contrastive learning approaches (e.g., AlignUniform, SimCLR), asymmetric models (e.g., SimSiam, BYOL), and redundancy reduction techniques (e.g., VICReg, Barlow Twins). Here, we show how the uniformity term from self-supervised learning can effectively prevent DC in UniDA. We further show that these SSL approaches also work in the paper.</p>
+                
+                <div class="row figure-container my-4">
+                    <div class="col-12 mb-3">
+                        <img src="static/images/uniformity.png" alt="DC" class="img-fluid">
+                    </div>
+                    <div class="figure-caption">
+                        <em>
+                            The alignment term alone worsens the dimensional collapse, while the uniformity term effectively prevents it. Combining both terms achieves the best performance.
+                        </em>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <img src="static/images/result.png" alt="DC" class="img-fluid">
+                    </div>
+                    <div class="figure-caption">
+                        <em>
+                            Adding SSL consistently improves PDM performance across the whole spectrum, and substantially outperforms baselines in extreme UniDA scenarios where DC is severe.
+                        </em>
+                    </div>
+                </div>
+            </div>
+        </section>                    
+                        
+
+            
+
+
+<!-- Citations Section -->
+<section id="citations" class="citation-section">
+    <h2 class="section-title">BibTeX</h2>
+            <div class="code-container position-relative" style="margin: 20px 0;">
+                <button id="copy-citation-btn" class="btn btn-sm" onclick="copyCitation()" style="position: absolute; top: 10px; right: 10px; z-index: 10;">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <pre id="code-block-citation" style="padding: 20px; padding-top: 50px; margin: 0; overflow-x: auto;"><code class="plaintext">@inproceedings{dcunida_fang2025,
+    title={Tackling Dimensional Collapse toward Comprehensive Universal Domain Adaptation},
+    author={Hung-Chieh Fang and Po-Yi Lu and Hsuan-Tien Lin},
+    booktitle={Proceedings of the International Conference on Machine Learning (ICML)},
+    year={2025},
+}</code></pre>
+
+    </div>
+</section>
+
+    </main>
+    <footer class="text-center py-3 mt-5" style="border-top: 1px solid #eee; color: #666; font-size: 0.9em;">
+        <div class="container">
+            <p class="mb-0">Template modified from <a href="https://jiachenzhu.github.io/DyT/" target="_blank" style="color: #666;">https://jiachenzhu.github.io/DyT/</a></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap and JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js" async></script>
+    <!-- Custom JS -->
+    <script src="scripts.js"></script>
+</body>
+</html>
