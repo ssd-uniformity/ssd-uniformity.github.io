@@ -18,6 +18,21 @@
     <link href="vscode-light-style.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <!-- MathJax for LaTeX rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js" async></script>
 </head>
 <body>
     <!-- Header Section -->
@@ -56,8 +71,8 @@
                 </div>
 
                     <div class="mt-4">
-                        <a href="https://arxiv.org/abs/2410.11271" class="btn btn-light me-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);"><i class="fas fa-file-alt me-2" style="color: var(--primary-color);"></i>Paper</a>
-                        <a href="https://github.com/hc-fang/" class="btn btn-light me-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);"><i class="fab fa-github me-2" style="color: var(--primary-color);"></i>Code</a>
+                        <a href="https://github.com/hc-fang/ssd" class="btn btn-light me-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);"><i class="fas fa-file-alt me-2" style="color: var(--primary-color);"></i>Paper</a>
+                        <a href="https://github.com/hc-fang/ssd" class="btn btn-light me-2" style="box-shadow: 0 4px 8px rgba(0,0,0,0.1);"><i class="fab fa-github me-2" style="color: var(--primary-color);"></i>Code</a>
                     </div>
                 </div>
             </div>
@@ -67,14 +82,17 @@
     <!-- Main Content -->
     <main class="container">
 
-        <section id="abstract">
-            <h2 class="section-title">WIP</h2>
-                <!-- <p>
-                    Federated Unsupervised Learning (FUL) aims to learn expressive representations in federated and self-supervised settings. The quality of representations learned in FUL is usually determined by uniformity, a measure of how uniformly representations are distributed in the embedding space. However, existing solutions perform well in achieving intra-client (local) uniformity for local models while failing to achieve inter-client (global) uniformity after aggregation due to non-IID data distributions and the decentralized nature of FUL. To address this issue, we propose Soft Separation and Distillation (SSD), a novel approach that preserves inter-client uniformity by encouraging client representations to spread toward different directions. This design reduces interference during client model aggregation, thereby improving global uniformity while preserving local representation expressiveness. We further enhance this effect by introducing a projector distillation module to address the discrepancy between loss optimization and representation quality. We evaluate SSD in both cross-silo and cross-device federated settings, demonstrating consistent improvements in representation quality and task performance across various training scenarios. Our results highlight the importance of inter-client uniformity in FUL and establish SSD as an effective solution to this challenge.
-                </p> -->
+        <section id="teaser">
+            <div class="col-12 mb-3 text-center">
+                <img src="static/images/FedUni_teaser.jpg" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 50%; height: auto;">
+            </div>
+            <div class="figure-caption">
+                <em>
+                    By softly separating client representations, SSD encourages them to spread toward different directions, thereby improving global uniformity while preserving local representation expressiveness.
+                </em>
+            </div> 
         </section>
 
-        <!-- Abstract Section -->
         <!-- <section id="abstract">
             <h2 class="section-title">Abstract</h2>
                 <p>
@@ -101,20 +119,54 @@
         </section> -->
         
         <!-- Motivation Section -->
-        <!-- <section id="motivation">
+        <section id="motivation">
             <h2 class="section-title">Motivation</h2>
             <div class="row figure-container my-4">
-                <div class="col-12 mb-3">
-                    <img src="static/images/motivation.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid">
+                <h4>Uniformity in Representation Learning</h4>
+                <p>
+                    Uniformity is a critical metric in representation learning (<a href="https://arxiv.org/abs/2005.10242" target="_blank">Wang et al., 2020</a>, <a href="https://arxiv.org/abs/2403.00642" target="_blank">Fang et al., 2024</a>), where higher uniformity indicates better preservation of information in the learned representations. In <i>centralized</i> training, jointly optimizing alignment loss, which encourages closeness of similar samples, and uniformity loss, which maximizes preserved information, yields high-quality representations.
+                </p>
+                <div class="col-12 mb-4">
+                    <div class="equation-container" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        $$
+                        \mathcal{L}_{\text{align}} = \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x}), \tilde{\mathbf{x}},\tilde{\mathbf{x}}^+ \sim \mathcal{T}(\mathbf{x})} ||\mathbf{z} - \mathbf{z}^+||^2_2, \quad \mathcal{L}_{\text{uniform}} = \log \mathbb{E}_{\mathbf{z}_i, \mathbf{z}_j \overset{\text{i.i.d}}{\sim} p(\mathbf{z})}\bigl[e^{-t ||\mathbf{z}_i - \mathbf{z}_j||^2_2}\bigr] 
+                        $$
+                    </div>
+                </div>
+                <h4>Challenges in Achieving Global Uniformity under Non-IID Data</h4>
+                <p>
+                    In <i>decentralized</i> training with <b>non-IID data</b>, however, achieving global uniformity is challenging.
+                </p>
+                <div class="col-12 mb-4">
+                    <div class="equation-container" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        $$
+                        \mathcal{L}_{\text{uniform}}
+                            = \log \biggl( \underbrace{\sum_{k=1}^K \mathbb{E}_{\mathbf{z}, \mathbf{z}' \overset{\text{i.i.d}}\sim p_k(\mathbf{z})} [e^{-t {||\mathbf{z} - \mathbf{z}'||^2_2}}] }_{\text{intra-client }  \mathcal{L}_{\text{uniform}}^k} \\ + \underbrace{\sum_{i\neq j} \mathbb{E}_{\mathbf{z} \sim p_i(\mathbf{z}), \mathbf{z}'\sim p_j(\mathbf{z})}[e^{-t {||\mathbf{z} - \mathbf{z}'||^2_2}}]}_{\text{inter-client }\mathcal{L}_{\text{uniform}}^{(i, j)}}  \biggr)
+                        $$
+                    </div>
+                </div>
+                <p>
+                    In this setting, each client $i$ optimizes its local loss function using samples from its own data distribution $p_i$. In homogeneous settings, where client distributions are similar (i.e., $p_i \approx p_j$), optimizing intra-client uniformity naturally promotes good inter-client uniformity. However, in non-IID settings, where client distributions differ significantly, optimizing only intra-client uniformity fails to ensure good inter-client uniformity, leading to suboptimal global representation quality.
+                </p>
+            </div>
+        </section>
+
+        <!-- Method Section -->
+        <section id="motivation">
+            <h2 class="section-title">Method</h2>
+            <div class="row figure-container my-4">
+                <h4>Soft Separation</h4>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/FedUni.jpg" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto;">
                 </div>
                 <div class="figure-caption">
-                    <em><b>Left</b>: Universal domain adaptation addresses both domain shift and category shift. 
-                        However, category shift scenarios with high source-private ratios remain under-explored.
-                        <b>Right</b>: In such extreme cases, existing partial domain matching (PDM) methods that align source and target data on shared classes fail to outperform the simplest source-only baseline. 
+                    <em>
+                        test
                     </em>
                 </div>
+                <h4>WIP</h4>
             </div>
-        </section> -->
+        </section>
          
 
         <!-- Key Findings Section -->
