@@ -7,7 +7,8 @@
     --dark-color: #483D8B;
     --text-color: #333333;
     --background-color: #FFFFFF;
-    --card-background: #FFFFF8;
+    /* --card-background: #FFFFF8; */
+    --card-background: #FFFFFF;
     --header-gradient: none; /* Changed from gradient to none */
     --footer-gradient: linear-gradient(135deg, #0B1F33 0%, #483D8B 100%);
     --nav-gradient: linear-gradient(90deg, #483D8B 0%, #0B1F33 100%);

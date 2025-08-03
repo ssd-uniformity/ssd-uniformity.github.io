@@ -16,6 +16,7 @@
     <link href="styles.css" rel="stylesheet">
     <!-- VSCode Syntax Highlighting -->
     <link href="vscode-light-style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="static/images/sphere.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/python.min.js"></script>
     <script>
@@ -129,10 +130,11 @@
                 <div class="col-12 mb-4">
                     <div class="equation-container" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
                         $$
-                        \mathcal{L}_{\text{align}} = \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x}), \tilde{\mathbf{x}},\tilde{\mathbf{x}}^+ \sim \mathcal{T}(\mathbf{x})} ||\mathbf{z} - \mathbf{z}^+||^2_2, \quad \mathcal{L}_{\text{uniform}} = \log \mathbb{E}_{\mathbf{z}_i, \mathbf{z}_j \overset{\text{i.i.d}}{\sim} p(\mathbf{z})}\bigl[e^{-t ||\mathbf{z}_i - \mathbf{z}_j||^2_2}\bigr] 
+                        \mathcal{L}_{\text{align}} = \mathbb{E}_{\mathbf{x}\sim p(\mathbf{x}), \tilde{\mathbf{x}},\tilde{\mathbf{x}}^+ \sim \mathcal{T}(\mathbf{x})} ||\mathbf{z} - \mathbf{z}^+||^2_2, \quad \mathcal{L}_{\text{uniform}} = - \log \mathbb{E}_{\mathbf{z}_i, \mathbf{z}_j \overset{\text{i.i.d}}{\sim} p(\mathbf{z})}\bigl[e^{-t ||\mathbf{z}_i - \mathbf{z}_j||^2_2}\bigr] 
                         $$
                     </div>
                 </div>
+                <hr>
                 <h4>Challenges in Achieving Global Uniformity under Non-IID Data</h4>
                 <p>
                     In <i>decentralized</i> training with <b>non-IID data</b>, however, achieving global uniformity is challenging.
@@ -141,7 +143,7 @@
                     <div class="equation-container" style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
                         $$
                         \mathcal{L}_{\text{uniform}}
-                            = \log \biggl( \underbrace{\sum_{k=1}^K \mathbb{E}_{\mathbf{z}, \mathbf{z}' \overset{\text{i.i.d}}\sim p_k(\mathbf{z})} [e^{-t {||\mathbf{z} - \mathbf{z}'||^2_2}}] }_{\text{intra-client }  \mathcal{L}_{\text{uniform}}^k} \\ + \underbrace{\sum_{i\neq j} \mathbb{E}_{\mathbf{z} \sim p_i(\mathbf{z}), \mathbf{z}'\sim p_j(\mathbf{z})}[e^{-t {||\mathbf{z} - \mathbf{z}'||^2_2}}]}_{\text{inter-client }\mathcal{L}_{\text{uniform}}^{(i, j)}}  \biggr)
+                            = - \log \biggl( \underbrace{\sum_{k=1}^K \mathbb{E}_{\mathbf{z}, \mathbf{z}' \overset{\text{i.i.d}}\sim p_k(\mathbf{z})} [e^{-t {||\mathbf{z} - \mathbf{z}'||^2_2}}] }_{\text{intra-client }  \mathcal{L}_{\text{uniform}}^k} \\ + \underbrace{\sum_{i\neq j} \mathbb{E}_{\mathbf{z} \sim p_i(\mathbf{z}), \mathbf{z}'\sim p_j(\mathbf{z})}[e^{-t {||\mathbf{z} - \mathbf{z}'||^2_2}}]}_{\text{inter-client }\mathcal{L}_{\text{uniform}}^{(i, j)}}  \biggr)
                         $$
                     </div>
                 </div>
@@ -155,16 +157,90 @@
         <section id="motivation">
             <h2 class="section-title">Method</h2>
             <div class="row figure-container my-4">
-                <h4>Soft Separation</h4>
+                <p>
+                    The core challenge in enhancing inter-client uniformity lies in the federated learning constraint that the server has <u>no access to raw client data or embeddings</u>, making it impossible to directly impose a loss function that operates across different clients.
+                </p>
                 <div class="col-12 mb-3 text-center">
-                    <img src="static/images/FedUni.jpg" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 100%; height: auto;">
+                    <img src="static/images/FedUni.jpg" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 80%; height: auto;">
                 </div>
-                <div class="figure-caption">
+                <!-- <div class="figure-caption">
                     <em>
-                        test
+                        Dimensional-Scaled Regularization encourages client representations to spread toward different directions.
                     </em>
+                </div> -->
+                <hr>
+                <h4>Dimensional-Scaled Regularization</h4>
+                <p>
+                    Our idea is to assign a specific direction to each client, encouraging their representations to spread toward different directions. Specifically, for each client $k$, we define a dimension-scaling vector $\mathbf{d}_k \in \mathbb{R}^d$, where $d$ is the dimensionality of the embedding space. This vector applies selective scaling to specific dimensions. We then regularize each client's embeddings by encouraging them to move toward their dimension-scaled versions through the following loss:
+                    $$
+                        \mathcal{L}_{\text{DSR}}^k = \mathbb{E}_{\mathbf{z}\sim p_k(\mathbf{z})}\left[\|\mathbf{z} - \text{stopgrad}(\mathbf{z} \odot \mathbf{d}_k)\|_2^2\right],
+                    $$
+                    where $\odot$ represents element-wise multiplication, and $\text{stopgrad}(\cdot)$ prevents gradient flow through the scaled target.
+
+                    The effect of DSR is shown below.
+                </p>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/dsr_demo.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 50%; height: auto;">
                 </div>
-                <h4>WIP</h4>
+                <hr>
+                <h4>Projector Distillation</h4>
+                <p>
+                While DSR effectively enhances uniformity at the <i>embedding</i> level, we observe that this improvement may not fully transfer to the <i>representation</i> level. This discrepancy occurs because the projector $g(\cdot)$ placed between the encoder $f(\cdot)$ and the loss function can absorb much of the optimization effect, as shown below.
+                </p>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/projector_distillation.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 80%; height: auto;">
+                </div>
+                <p>
+                    Although removing the projector might seem like a direct solution, prior work (<a href="https://arxiv.org/abs/2212.11491" target="_blank">Gupta et al., 2022</a>, <a href="https://arxiv.org/abs/2403.11391" target="_blank">Xue et al., 2024</a>) has shown that the projector plays a crucial role in separating optimization objectives from representation quality, thereby preventing overfitting to specific self-supervised tasks.
+                    To bridge this gap, we introduce Projector Distillation (PD), which explicitly aligns the encoder's representations $\mathbf{h}$ with the projector's embeddings $\mathbf{z}$:
+                    $$
+                        \mathcal{L}_{\text{distill}}^k = \mathbb{E}_{x\sim p_k(\mathbf{x})}\left[D_{\text{KL}}\left(\sigma(\mathbf{h}) \| \sigma(\mathbf{z})\right)\right],
+                    $$
+                    This distillation mechanism encourages the encoder to internalize the beneficial structure learned in the embedding space, effectively transferring the improved uniformity from embeddings to representations.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- Method Section -->
+        <section id="motivation">
+            <h2 class="section-title">Results</h2>
+            <div class="row figure-container my-4">
+                <h4>Main Results</h4>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/main_result.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 85%; height: auto;">
+                </div>
+                <!-- <p>
+                    Results on cross-device and cross-silo federated settings.
+                </p>  -->
+                <br><br>
+                <h4>Transfer Learning</h4>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/ood.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 85%; height: auto;">
+                </div>
+                <p>
+                    SSD shows strong transferability to out-of-distribution data, achieving better performance and representation quality. An interesting observation is that FedX, which does not perform well in the main table, shows good representation quality and strong performance in this setting. This implies a correlation between representation quality and transferability.
+                </p>
+                
+
+                <h4>Soft vs. Hard Separation</h4>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/soft_hard.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 85%; height: auto;">
+                </div>
+                <p>
+                    We adopt a soft separation strategy that regularizes client representations toward a specific direction. In contrast, a more direct approach to maximizing inter-client uniformity is to constrain each client to a distinct, client-specific subspace. As shown in the table, this method indeed achieves the highest uniformity, but at the cost of reduced alignment.
+                </p>
+
+                <h4>Why not remove the projector?</h4>
+                <div class="col-12 mb-3 text-center">
+                    <img src="static/images/projector.png" alt="Dimensional collapse in extreme UniDA scenarios" class="img-fluid mx-auto d-block" style="max-width: 85%; height: auto;">
+                </div>
+                <p>
+                    As shown in the table, removing the projector significantly improves uniformity when DSR is applied, highlighting the impact of the separation strategy. However, this also results in a substantial drop in performance. To address this, we propose a strategy that preserves the projector while still maintaining the separation effect.
+                </p>
+                
+                
+
             </div>
         </section>
          
@@ -261,7 +337,7 @@
                 <pre id="code-block-citation" style="padding: 20px; padding-top: 50px; margin: 0; overflow-x: auto;"><code class="plaintext">@inproceedings{ssd_fang2025,
     title={Soft Separation and Distillation: Toward Global Uniformity in Federated Unsupervised Learning},
     author={Hung-Chieh Fang and Hsuan-Tien Lin and Irwin King and Yifei Zhang},
-    booktitle={Proceedings of the International Conference on Computer Vision (ICCV)},
+    booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
     year={2025},
 }</code></pre>
 
